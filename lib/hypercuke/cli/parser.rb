@@ -5,7 +5,9 @@ module Hypercuke
     class Parser
       attr_reader :options
       def initialize(hcu_command)
-        @tokens = tokenize(hcu_command)
+        @tokens  = tokenize(hcu_command)
+        @options = Hash.new
+
         parse_options
       end
 
@@ -17,15 +19,11 @@ module Hypercuke
       attr_reader :tokens
 
       def parse_options
-        @options = Hash.new
-
         ignore_hcu
         set_layer_name
         set_mode_if_present
         set_profile_if_present
         set_other_args
-
-        options
       end
 
       def tokenize(input)
