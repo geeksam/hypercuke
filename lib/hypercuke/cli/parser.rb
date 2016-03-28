@@ -18,14 +18,6 @@ module Hypercuke
       private
       attr_reader :tokens
 
-      def parse_options
-        ignore_hcu
-        set_layer_name
-        set_mode_if_present
-        set_profile_if_present
-        set_other_args
-      end
-
       def tokenize(input)
         args =
           case input
@@ -34,6 +26,14 @@ module Hypercuke
           else fail "Don't know how to parse #{input.inspect}"
           end
         args.compact
+      end
+
+      def parse_options
+        ignore_hcu
+        set_layer_name
+        set_mode_if_present
+        set_profile_if_present
+        set_other_args
       end
 
       # We might get the 'hcu' command name itself; just drop it on the floor
