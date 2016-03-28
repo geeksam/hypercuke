@@ -37,7 +37,7 @@ module Hypercuke
     end
 
     def cucumber_command_for_display
-      "HYPERCUKE_LAYER=#{layer_name} #{cucumber_command}"
+      "#{LAYER_NAME_ENV_VAR}=#{layer_name} #{cucumber_command}"
     end
 
     private
