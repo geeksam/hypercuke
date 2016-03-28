@@ -32,7 +32,8 @@ module Hypercuke
     end
 
     def cucumber_command
-      builder.cucumber_command_line(self.class.bundler_present?)
+      prepend_bundler = self.class.bundler_present?
+      builder.cucumber_command_line(prepend_bundler)
     end
 
     def cucumber_command_for_display
