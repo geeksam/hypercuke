@@ -70,13 +70,13 @@ Hypercuke directly addresses each of the pain points described above:
   objects.  Once you're satisfied with how that works, you can move up
   to a higher level of abstraction.  If a scenario is a "walking
   skeleton", Hypercuke lets you start by building the skeleton just up
-  to the knees, then up to the spine, and so on.
+  to the knees, then up to the base of the spine, and so on.
 
 * Just because your tests are in Cucumber doesn't mean they have to be
-  slow.  I originally developed Cucumber because I wanted to describe
-  all of my features using Gherkin, but only test one or two scenarios
-  through a web browser.  Scenarios to describe boundary cases,
-  exceptions, or variations can run against a lower layer of the
+  slow.  I originally developed Hypercuke because I wanted to describe
+  all of my features using Gherkin, but only test one or two "golden
+  path" scenarios through a web browser.  Scenarios to describe boundary
+  cases, exceptions, or variations can run against a lower layer of the
   application, which can have as much or as little overhead as makes
   sense for each scenario.
 
@@ -135,7 +135,7 @@ TODO: Write more detailed usage instructions
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/hypercuke/fork )
+1. Fork it ( https://github.com/geeksam/hypercuke/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
