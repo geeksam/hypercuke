@@ -1,7 +1,7 @@
 module Hypercuke
   class CLI
 
-    # I take information extracted the Parser and use it to build a
+    # I take information extracted by the Parser and use it to build a
     # 'cucumber' command line
     class Builder
       def initialize(options)

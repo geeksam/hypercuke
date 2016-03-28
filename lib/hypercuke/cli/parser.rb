@@ -1,7 +1,10 @@
 module Hypercuke
   class CLI
 
-    # I extract relevant information from a 'hcu' command line
+    # I extract relevant information from a 'hcu' command line, namely:
+    # - layer name
+    # - mode, if present, defaulting to 'ok'
+    # - other args to pass along to Cucumber
     class Parser
       attr_reader :options
       def initialize(hcu_command)
