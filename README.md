@@ -97,10 +97,6 @@ Hypercuke directly addresses each of the pain points described above:
   Ruby objects, which means you can use all of your Ruby fu to keep your
   code organized.
 
-## How?
-
-TODO: continue here :D
-
 ## About the Name
 
 I started out with the concept of "layers", so this gem was originally
@@ -125,13 +121,56 @@ Or install it yourself as:
 
 ## Usage
 
-Obviously I have some more writing to do, but you'll need to add this
-line somewhere in your application's Cucumber environment (this is
-usually somewhere in /features/support/):
+Add this to your Cucumber environment setup (probably in `features/support/env.rb`)
 
+    require 'hypercuke'
     require 'hypercuke/cucumber_integration'
 
-TODO: Write more detailed usage instructions
+Then tag all your features with a layer name. For the rest of the usage instructions, I'll be using a layer called "web".
+
+```feature
+@web
+Feature: Widgets
+  In order to ...
+  As a ...
+  I want ...
+```
+
+Now replace the body of your step definitions with a call to the Hypercuke step driver
+```ruby
+# features/step_definitions/widget_steps.rb
+
+# Note that these step defininitions don't know which layer
+# you're using, and can be re-used across multiple layers.
+# The step_driver will figure out the correct layer.
+
+When(/^I view the list of widgets$/) do
+  step_driver.widgets.view_list
+end
+```
+
+Define a Step Adapter. Here we'll define an adapter for the "widgets" topic.
+
+```ruby
+# features/step_adapters/widgets/web_adapter.rb
+Hypercuke.topic :widgets do
+  layer :web do
+    # I'm including the Capybara DSL, because this is the web layer
+    # and we want to interact with a browser.
+    include Capybara::DSL
+    include RSpec::Expectations
+    include RSpec::Matchers
+    
+    def view_list
+      visit '/widgets'
+    end
+  end
+end
+```
+
+With all that in place, you can run hypercuke on the command line. For example, if you want to run all the scenarios tagged with `@web`:
+
+    bundle exec hcu web
 
 ## Contributing
 
