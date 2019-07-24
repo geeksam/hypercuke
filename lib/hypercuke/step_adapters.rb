@@ -27,8 +27,8 @@ module Hypercuke
   module StepAdapters
     extend self # BTW, I hate typing "self." in modules.
 
-    # We'll get to what makes a topic module special is in a moment, but
-    # here's how we fetch one:
+    # We'll get to what makes a topic module special in a moment,
+    # but here's how we fetch one:
     def fetch_topic_module(topic_name)
       # FIXME: cyclomatic complexity
       Hypercuke.topics.validate(topic_name) do
@@ -36,7 +36,7 @@ module Hypercuke
       end
       validate_topic_module \
         begin
-          const_get( MiniInflector.camelize(topic_name) )
+          MiniInflector.constantize topic_name, self
         rescue NameError => e
           raise Hypercuke::TopicNotDefinedError.wrap(e)
         end
@@ -61,7 +61,7 @@ module Hypercuke
       end
       validate_step_adapter \
         begin
-          const_get( MiniInflector.camelize(layer_name) )
+          MiniInflector.constantize layer_name, self
         rescue NameError => e
           raise Hypercuke::StepAdapterNotDefinedError.wrap(e)
         end
