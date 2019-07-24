@@ -19,7 +19,7 @@ actually cares about.
 ### So Why Doesn't Everyone Do This Already?
 
 The traditional Rails approach of using Cucumber to test an app from a
-browser has some pitfalls:
+browser can be a bit tedious:
 
 * In the short term, sometimes there's a LOT of new functionality to
   define, and you spend days or weeks just getting one scenario to pass.
@@ -45,7 +45,7 @@ More importantly, Cucumber has some long-term pitfalls:
   projects with thousands of lines of horrible procedural code in deeply
   interdependent step definitions that resist refactoring.  In one
   particularly memorable instance, I actually helped write a 50-line
-  step definitions with a parameter named "destroy_the_earth".
+  step definition with a parameter named "destroy_the_earth".
 
 ### Why Hypercuke?
 
@@ -65,12 +65,12 @@ test any or all of:
 
 Hypercuke directly addresses each of the pain points described above:
 
-* By starting off at a low layer, you can use your Cucumber scenario as
-  a short-span integration test that's just wrapped around a few simple
-  objects.  Once you're satisfied with how that works, you can move up
-  to a higher level of abstraction.  If a scenario is a "walking
-  skeleton", Hypercuke lets you start by building the skeleton just up
-  to the knees, then up to the base of the spine, and so on.
+* By starting off at a low layer, you can use your Cucumber scenario as a
+  short-span integration test that's just wrapped around a few simple objects.
+  Once you're satisfied with how that works, you can move up to a higher level
+  of abstraction.  If a scenario is a "walking skeleton", testing at multiple
+  layers lets you start by building the skeleton just up to the knees, then up
+  to the base of the spine, and so on.
 
 * Just because your tests are in Cucumber doesn't mean they have to be
   slow.  I originally developed Hypercuke because I wanted to describe
@@ -87,7 +87,7 @@ Hypercuke directly addresses each of the pain points described above:
   very quickly reminds me to use more generic language.  This helps me
   write tests at a high level of abstraction, and it also helps keep me
   focused on *why* I'm writing this feature, so I don't get lost
-  building a gold-plated automated yak-shaving factory.
+  TDDing my way through a gold-plated automated yak-shaving factory.
 
 * Finally, Hypercuke provides *just enough* structure for you to write
   reusable step definitions.  Inside the regular-expression-plus-block
@@ -100,6 +100,65 @@ Hypercuke directly addresses each of the pain points described above:
 ## How?
 
 TODO: continue here :D
+
+### Important Concepts
+
+#### Step Driver
+
+Hypercuke adds a single `#step_driver` method to the Cucumber "world".  *THIS
+SHOULD BE ALL YOU NEED IN THE CUCUMBER WORLD.*  Ideally, a step definition
+should consist of a single line of code that sends a message to `step_driver`.
+
+#### Topic
+
+Within the step driver, you have access to various *topics*.  A topic can be
+any interesting part of your application:  you might have a topic that sets up
+various user accounts, one manages authentication, and one for each of the
+major entities in your application.  Think of this as a vertical slice through
+your application.  If you're familiar with UML sequence diagrams, a topic might
+give you access to one or more "objects" (those are the boxes along the top
+that have vertical "lifelines" below them).
+
+#### Layers
+
+If a Topic is a vertical slice through your application's features, a layer is
+a horizontal slice.  A Layer defines how you interact with each Topic *at a
+specific layer of abstraction* (hence the name).
+
+#### Step Adapter
+
+Step Adapters are an internal implementation detail of Hypercuke, and you
+mostly shouldn't have to worry about them.  They are mentioned here purely for
+completeness.  Every method you define using Hypercuke winds up living on a
+StepAdapter object.
+
+This is probably easier to understand with a table, so...
+
+#### Putting It All Together
+
+* Top-level object available as #step_driver: Step Driver
+* Area of domain: Topic
+* Layer of application: Layer
+* Intersection of the two:  StepAdapter
+* Name of generated StepAdapter class: `Hypercuke::StepAdapters::<Topic>::<Layer>`
+
+Here's a quick ASCII diagram swiped from one of the spec files:
+
+```
+                        T O P I C S
+      L           +------------+------+-------+
+      A           | Cheese     | Wine | Bread |
+      Y   +-------+------------+------+-------+
+      E   | Core  | SA*        | SA*  | SA*   |
+      R   | Model | SA*        | SA*  | SA*   |
+      S   | UI    | SA*        | SA*  | SA*   |
+          +-------+------------+------+-------+
+            * SA = StepAdapter
+```
+
+### Step Definitions
+
+TODO: write me
 
 ## About the Name
 
